@@ -9,9 +9,9 @@ public class DBConexion {
     private static final String URL =
             "jdbc:mysql://localhost:3306/parking_management_db?useSSL=false&serverTimezone=America/Bogota";
 
-    private static final String USUARIO = "root";
+    private static final String USUARIO = "root";//aca el usuario
 
-    private static final String PASSWORD = "Holasoyyo2009*";
+    private static final String PASSWORD = "aqui_tu_contraseña_de_mysql";//aca la contraseña
 
     public static Connection obtener() throws SQLException {
 

@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Operador</title>
+
+    <link rel="stylesheet"
+          href="css/style.css">
+
+</head>
+
+<body>
+
+<nav>
+
+    <div class="logo">
+
+        <div class="logo-icon">
+            P
+        </div>
+
+        Parking El Paisa
+
+    </div>
+
+    <button class="btn-primary"
+            onclick="logout()"
+            style="width:auto;padding:.7rem 1.2rem">
+
+        Salir
+
+    </button>
+
+</nav>
+
+<div class="dashboard">
+
+    <!-- CUPOS -->
+
+    <div class="card">
+
+        <h2>Cupos</h2>
+
+        <div class="cupos-grid">
+
+            <div class="cupo-box">
+                <span id="c-total">0</span>
+                Total
+            </div>
+
+            <div class="cupo-box">
+                <span id="c-ocupados">0</span>
+                Ocupados
+            </div>
+
+            <div class="cupo-box">
+                <span id="c-disponibles">0</span>
+                Libres
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ENTRADA -->
+
+    <div class="card">
+
+        <h2>Registrar entrada</h2>
+
+        <div class="form-group">
+
+            <label>Placa</label>
+
+            <input type="text"
+                   id="entrada-placa">
+
+        </div>
+
+        <div class="form-group">
+
+            <label>Tipo</label>
+
+            <select id="entrada-tipo">
+
+                <option value="1">
+                    Automóvil
+                </option>
+
+                <option value="2">
+                    Moto
+                </option>
+
+            </select>
+
+        </div>
+
+        <button class="btn-primary"
+                onclick="registrarEntrada()">
+
+            Registrar
+
+        </button>
+
+        <p class="msg-resultado"
+           id="msg-entrada"></p>
+
+    </div>
+
+    <!-- SALIDA -->
+
+    <div class="card">
+
+        <h2>Registrar salida</h2>
+
+        <div class="form-group">
+
+            <label>Placa</label>
+
+            <input type="text"
+                   id="salida-placa">
+
+        </div>
+
+        <button class="btn-primary"
+                onclick="registrarSalida()">
+
+            Cobrar salida
+
+        </button>
+
+        <p class="msg-resultado"
+           id="msg-salida"></p>
+
+    </div>
+
+</div>
+
+<script>
+
+    const API = '/ParkingElPaisa';
+
+    async function cargarCupos() {
+
+        const r = await fetch(
+            API + '/api/cupos'
+        );
+
+        const d = await r.json();
+
+        if (d.ok) {
+
+            document.getElementById(
+                'c-total'
+            ).textContent = d.total;
+
+            document.getElementById(
+                'c-ocupados'
+            ).textContent = d.ocupados;
+
+            document.getElementById(
+                'c-disponibles'
+            ).textContent = d.disponibles;
+        }
+    }
+
+    async function registrarEntrada() {
+
+            // Limpiar mensaje anterior
+            document.getElementById('msg-entrada').textContent = '';
+
+            const params = new URLSearchParams();
+            // ... resto del código igual
+
+        params.append(
+            'placa',
+            document.getElementById('entrada-placa').value
+        );
+
+        params.append(
+            'vehicleTypeId',
+            document.getElementById('entrada-tipo').value
+        );
+
+        const r = await fetch(
+            API + '/api/ticket/entrada',
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: params
+            }
+        );
+
+        const d = await r.json();
+
+        document.getElementById('msg-entrada').textContent = d.mensaje;
+
+        cargarCupos();
+    }
+
+    async function registrarSalida() {
+
+        const params = new URLSearchParams();
+
+        params.append(
+            'placa',
+            document.getElementById('salida-placa').value
+        );
+
+        const r = await fetch(
+            API + '/api/ticket/salida',
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: params
+            }
+        );
+
+        const d = await r.json();
+
+        document.getElementById('msg-salida').textContent = d.mensaje;
+
+        cargarCupos();
+    }
+
+    async function logout() {
+
+        await fetch(
+            API + '/api/logout',
+            {
+                method:'POST'
+            }
+        );
+
+        window.location =
+            'index.html';
+    }
+
+    cargarCupos();
+
+</script>
+
+</body>
+</html>

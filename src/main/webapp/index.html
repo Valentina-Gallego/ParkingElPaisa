@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Parking El Paisa</title>
+
+    <link rel="stylesheet"
+          href="css/style.css">
+
+</head>
+
+<body>
+
+<nav>
+
+    <div class="logo">
+
+        <div class="logo-icon">
+            P
+        </div>
+
+        Parking El Paisa
+
+    </div>
+
+</nav>
+
+<div class="dashboard">
+
+    <!-- LOGIN -->
+
+    <div class="card">
+
+        <h2>Iniciar sesión</h2>
+
+        <div class="form-group">
+
+            <label>Usuario</label>
+
+            <input type="text"
+                   id="login-user">
+
+        </div>
+
+        <div class="form-group">
+
+            <label>Contraseña</label>
+
+            <input type="password"
+                   id="login-pass">
+
+        </div>
+
+        <button class="btn-primary"
+                onclick="login()">
+
+            Ingresar
+
+        </button>
+
+        <p class="msg-resultado"
+           id="login-msg"></p>
+
+    </div>
+
+    <!-- REGISTRO -->
+
+    <div class="card">
+
+        <h2>Registrarse</h2>
+
+        <div class="form-group">
+
+            <label>Nombre completo</label>
+
+            <input type="text"
+                   id="reg-name">
+
+        </div>
+
+        <div class="form-group">
+
+            <label>Usuario</label>
+
+            <input type="text"
+                   id="reg-user">
+
+        </div>
+
+        <div class="form-group">
+
+            <label>Contraseña</label>
+
+            <input type="password"
+                   id="reg-pass">
+
+        </div>
+
+        <div class="form-group">
+
+            <label>Tipo de usuario</label>
+
+            <select id="reg-role">
+
+                <option value="1">
+                    Operador
+                </option>
+
+                <option value="2">
+                    Cliente
+                </option>
+
+            </select>
+
+        </div>
+
+        <button class="btn-primary"
+                onclick="register()">
+
+            Crear cuenta
+
+        </button>
+
+        <p class="msg-resultado"
+           id="reg-msg"></p>
+
+    </div>
+
+</div>
+
+<script>
+
+    const API = '/ParkingElPaisa';
+
+    async function login() {
+
+        const params = new URLSearchParams();
+
+        params.append(
+            'username',
+            document.getElementById('login-user').value
+        );
+
+        params.append(
+            'password',
+            document.getElementById('login-pass').value
+        );
+
+        const r = await fetch(
+            API + '/api/login',
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: params
+            }
+        );
+
+        const d = await r.json();
+
+        if (d.ok) {
+            localStorage.setItem('nombre', d.nombre);
+            window.location = d.roleId == 1 ? 'operador.html' : 'cliente.html';
+        } else {
+            document.getElementById('login-msg').textContent = 'Login incorrecto';
+        }
+    }
+
+    async function register() {
+
+        const params = new URLSearchParams();
+
+        params.append(
+            'nombre',
+            document.getElementById('reg-name').value
+        );
+
+        params.append(
+            'username',
+            document.getElementById('reg-user').value
+        );
+
+        params.append(
+            'password',
+            document.getElementById('reg-pass').value
+        );
+
+        params.append(
+            'roleId',
+            document.getElementById('reg-role').value
+        );
+
+        const r = await fetch(
+            API + '/api/register',
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: params
+            }
+        );
+
+        const d = await r.json();
+
+        document.getElementById('reg-msg').textContent = d.mensaje;
+    }
+
+</script>
+
+</body>
+</html>

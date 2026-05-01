@@ -1,0 +1,158 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Segoe UI',sans-serif;
+    background:#0A1628;
+    color:#fff;
+    min-height:100vh;
+}
+
+nav{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:1rem 5%;
+    background:#0A1628;
+    border-bottom:1px solid rgba(255,255,255,0.07);
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-size:1.1rem;
+    font-weight:700;
+}
+
+.logo-icon{
+    width:32px;
+    height:32px;
+    background:#F5A623;
+    border-radius:8px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:900;
+    color:#0A1628;
+}
+
+.dashboard{
+    display:grid;
+    grid-template-columns:
+        repeat(auto-fit,minmax(300px,1fr));
+
+    gap:1.5rem;
+
+    padding:2rem 5%;
+
+    max-width:1200px;
+
+    margin:0 auto;
+}
+
+.card{
+    background:#111E35;
+
+    border:1px solid rgba(255,255,255,0.07);
+
+    border-radius:16px;
+
+    padding:1.75rem;
+}
+
+.card h2{
+    font-size:1.05rem;
+    font-weight:700;
+    margin-bottom:1.25rem;
+}
+
+.form-group{
+    margin-bottom:1rem;
+}
+
+.form-group label{
+    display:block;
+    font-size:.8rem;
+    color:rgba(255,255,255,0.5);
+    margin-bottom:.4rem;
+}
+
+.form-group input,
+.form-group select{
+
+    width:100%;
+
+    padding:.7rem 1rem;
+
+    background:rgba(255,255,255,0.05);
+
+    border:1px solid rgba(255,255,255,0.1);
+
+    border-radius:10px;
+
+    color:#fff;
+
+    outline:none;
+}
+
+.btn-primary{
+
+    width:100%;
+
+    border:none;
+
+    border-radius:10px;
+
+    padding:.8rem;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    background:#F5A623;
+
+    color:#0A1628;
+}
+
+.btn-primary:hover{
+    opacity:.9;
+}
+
+.msg-resultado{
+    margin-top:1rem;
+    font-size:.9rem;
+}
+
+.cupos-grid{
+    display:flex;
+    gap:1rem;
+}
+
+.cupo-box{
+    flex:1;
+    text-align:center;
+    padding:1rem;
+    border-radius:12px;
+    background:rgba(255,255,255,0.05);
+}
+
+.cupo-box span{
+    display:block;
+    font-size:2rem;
+    font-weight:800;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th,td{
+    padding:.7rem;
+    border-bottom:1px solid rgba(255,255,255,0.08);
+    text-align:left;
+}

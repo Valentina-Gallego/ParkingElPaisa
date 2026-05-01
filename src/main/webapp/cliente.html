@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Cliente</title>
+
+    <link rel="stylesheet"
+          href="css/style.css">
+
+</head>
+
+<body>
+
+<nav>
+
+    <div class="logo">
+
+        <div class="logo-icon">
+            P
+        </div>
+
+        Parking El Paisa
+
+    </div>
+
+    <button class="btn-primary"
+            onclick="logout()"
+            style="width:auto;padding:.7rem 1.2rem">
+
+        Salir
+
+    </button>
+
+</nav>
+
+<div class="dashboard">
+
+    <!-- CUPOS -->
+
+    <div class="card">
+
+        <h2>Cupos disponibles</h2>
+
+        <div class="cupos-grid">
+
+            <div class="cupo-box">
+                <span id="c-total">0</span>
+                Total
+            </div>
+
+            <div class="cupo-box">
+                <span id="c-ocupados">0</span>
+                Ocupados
+            </div>
+
+            <div class="cupo-box">
+                <span id="c-disponibles">0</span>
+                Libres
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- HISTORIAL -->
+
+    <div class="card">
+
+        <h2>Consultar historial</h2>
+
+        <div class="form-group">
+
+            <label>Placa</label>
+
+            <input type="text"
+                   id="placa">
+
+        </div>
+
+        <button class="btn-primary"
+                onclick="consultar()">
+
+            Consultar
+
+        </button>
+
+    </div>
+
+    <!-- TABLA -->
+
+    <div class="card">
+
+        <h2>Historial</h2>
+
+        <table>
+
+            <thead>
+
+            <tr>
+
+                <th>ID</th>
+                <th>Entrada</th>
+                <th>Salida</th>
+                <th>Total</th>
+                <th>Estado</th>
+
+            </tr>
+
+            </thead>
+
+            <tbody id="tabla">
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+<script>
+
+    const API = '/ParkingElPaisa';
+
+    async function cargarCupos() {
+
+        const r = await fetch(
+            API + '/api/cupos'
+        );
+
+        const d = await r.json();
+
+        if (d.ok) {
+
+            document.getElementById(
+                'c-total'
+            ).textContent = d.total;
+
+            document.getElementById(
+                'c-ocupados'
+            ).textContent = d.ocupados;
+
+            document.getElementById(
+                'c-disponibles'
+            ).textContent = d.disponibles;
+        }
+    }
+
+    async function consultar() {
+
+        const placa =
+            document.getElementById(
+                'placa'
+            ).value;
+
+        const r = await fetch(
+            API + '/api/historial?placa='
+            + placa
+        );
+
+        const data = await r.json();
+
+        const tabla =
+            document.getElementById(
+                'tabla'
+            );
+
+        tabla.innerHTML = '';
+
+        data.forEach(t => {
+
+            tabla.innerHTML += `
+
+        <tr>
+
+            <td>${t.id}</td>
+
+            <td>${t.entryTime || ''}</td>
+
+            <td>${t.exitTime || ''}</td>
+
+            <td>$${t.totalAmount || 0}</td>
+
+            <td>${t.status}</td>
+
+        </tr>
+        `;
+        });
+    }
+
+    async function logout() {
+
+        await fetch(
+            API + '/api/logout',
+            {
+                method:'POST'
+            }
+        );
+
+        window.location =
+            'index.html';
+    }
+
+    cargarCupos();
+
+</script>
+
+</body>
+</html>
